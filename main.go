@@ -3,10 +3,12 @@ package main
 import (
 	"log"
 
+	"WalletTest/internal"
 	"WalletTest/pkg/app_error"
 	"WalletTest/pkg/config"
 	"WalletTest/pkg/database"
 	"WalletTest/pkg/server"
+	"WalletTest/proto"
 )
 
 func main() {
@@ -32,13 +34,17 @@ func main() {
 	}
 	//memoryCache := config.NewMemoryCache()
 
-	// =============== SERVER ===============
-	wallet, err := server.NewWallet(env.APP_PORT)
+	// =============== DEPENDENCIES ===============
+	wallet := internal.NewWallet()
+	grpc, err := server.NewGrpc(env.APP_PORT)
 	if err != nil {
 		log.Fatal(err)
 	}
-	server.GracefulCloseWallet(wallet.Server)
-	if err := server.StartWallet(wallet.Server, wallet.Listener); err != nil {
+	proto.RegisterWalletServiceServer(grpc.Server, wallet)
+
+	// =============== SERVER ===============
+	grpc.GracefulClose()
+	if err := grpc.Start(); err != nil {
 		log.Fatal(err)
 	}
 }

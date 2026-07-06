@@ -1,8 +1,6 @@
 package server
 
 import (
-	"WalletTest/internal"
-	"WalletTest/proto"
 	"net"
 	"os"
 	"os/signal"
@@ -13,7 +11,12 @@ import (
 	"google.golang.org/grpc/keepalive"
 )
 
-func NewWallet(port string) (*internal.Wallet, error) {
+type Grpc struct {
+	Server   *grpc.Server
+	Listener net.Listener
+}
+
+func NewGrpc(port string) (*Grpc, error) {
 	listener, err := net.Listen("tcp", ":"+port)
 	if err != nil {
 		return nil, err
@@ -34,22 +37,21 @@ func NewWallet(port string) (*internal.Wallet, error) {
 		grpc.MaxSendMsgSize(4*1024*1024), // 4MB
 		grpc.MaxConcurrentStreams(100),
 	)
-	proto.RegisterWalletServiceServer(server, &internal.Wallet{})
-	return &internal.Wallet{
+	return &Grpc{
 		Server:   server,
 		Listener: listener,
 	}, nil
 }
 
-func StartWallet(server *grpc.Server, listener net.Listener) error {
-	return server.Serve(listener)
+func (g *Grpc) Start() error {
+	return g.Server.Serve(g.Listener)
 }
 
-func GracefulCloseWallet(server *grpc.Server) {
+func (g *Grpc) GracefulClose() {
 	go func() {
 		sigCh := make(chan os.Signal, 1)
 		signal.Notify(sigCh, os.Interrupt, syscall.SIGTERM)
 		<-sigCh
-		server.GracefulStop()
+		g.Server.GracefulStop()
 	}()
 }
