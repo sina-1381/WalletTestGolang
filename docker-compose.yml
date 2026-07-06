@@ -1,0 +1,14 @@
+services:
+  postgresql:
+    image: postgres:alpine
+    environment:
+      POSTGRES_USER: ${POSTGRESQL_USER:-root}
+      POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD:-root}
+      POSTGRES_DB: ${POSTGRESQL_DATABASE:-WalletTest}
+    ports:
+      - "${POSTGRESQL_PORT:-5432}:5432"
+
+  adminer:
+    image: adminer
+    ports:
+      - "${ADMINER_PORT:-8080}:8080"

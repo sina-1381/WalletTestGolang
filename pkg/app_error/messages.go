@@ -1,0 +1,38 @@
+package app_error
+
+import "net/http"
+
+// error messages
+var (
+	EnvFile                  = NewAppError("env file not found", http.StatusInternalServerError)
+	LogFile                  = NewAppError("log file not found", http.StatusInternalServerError)
+	PostgresqlConnection     = NewAppError("could not connect to postgresql", http.StatusInternalServerError)
+	RedisConnection          = NewAppError("could not connect to redis", http.StatusInternalServerError)
+	GRPCConnection           = NewAppError("could not connect to grpc", http.StatusInternalServerError)
+	MigrationFail            = NewAppError("migration failed", http.StatusInternalServerError)
+	JsonFormatOnly           = NewAppError("only json data is accepted", http.StatusBadRequest)
+	JsonBadFormat            = NewAppError("bad json data or unexpected json keys", http.StatusBadRequest)
+	JsonSingleObject         = NewAppError("only one json object at a time", http.StatusBadRequest)
+	ValidationFail           = NewAppError("validation failed", http.StatusUnprocessableEntity)
+	NotFound                 = NewAppError("resource not found", http.StatusNotFound)
+	Duplicate                = NewAppError("resource already exists", http.StatusConflict)
+	InvalidInput             = NewAppError("invalid input", http.StatusBadRequest)
+	Unauthorized             = NewAppError("unauthorized", http.StatusUnauthorized)
+	Forbidden                = NewAppError("forbidden", http.StatusForbidden)
+	InternalServer           = NewAppError("internal server error", http.StatusInternalServerError)
+	JwtGenerationFailed      = NewAppError("jwt generation failed", http.StatusInternalServerError)
+	JwtValidationFailed      = NewAppError("jwt validation failed", http.StatusInternalServerError)
+	DatabaseTokenCheckFailed = NewAppError("Failed to delete expired tokens", http.StatusInternalServerError)
+	UserNotFound             = NewAppError("user not found", http.StatusNotFound)
+	WeakPassword             = NewAppError("password must be at least 8 characters", http.StatusBadRequest)
+	EmailTaken               = NewAppError("email already registered", http.StatusConflict)
+	InvalidToken             = NewAppError("invalid or expired token", http.StatusUnauthorized)
+	SessionExpired           = NewAppError("session expired", http.StatusUnauthorized)
+	HashFailed               = NewAppError("password processing failed", http.StatusInternalServerError)
+	InvalidEmail             = NewAppError("invalid email", http.StatusUnauthorized)
+	InvalidEmailPassword     = NewAppError("invalid email or password", http.StatusUnauthorized)
+	InvalidID                = NewAppError("invalid id", http.StatusUnauthorized)
+	InvalidPassword          = NewAppError("invalid password", http.StatusUnauthorized)
+	InvalidOTP               = NewAppError("invalid otp", http.StatusUnauthorized)
+	RefreshAccessNotMatched  = NewAppError("refresh and access token not from the same user", http.StatusUnauthorized)
+)
