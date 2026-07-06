@@ -68,7 +68,7 @@ func (x *CreateWalletRequest) GetUserId() int64 {
 type CreateWalletResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	WalletId      int64                  `protobuf:"varint,1,opt,name=wallet_id,json=walletId,proto3" json:"wallet_id,omitempty"`
-	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	Balance       int64                  `protobuf:"varint,2,opt,name=balance,proto3" json:"balance,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -110,11 +110,11 @@ func (x *CreateWalletResponse) GetWalletId() int64 {
 	return 0
 }
 
-func (x *CreateWalletResponse) GetMessage() string {
+func (x *CreateWalletResponse) GetBalance() int64 {
 	if x != nil {
-		return x.Message
+		return x.Balance
 	}
-	return ""
+	return 0
 }
 
 type GetBalanceRequest struct {
@@ -163,8 +163,8 @@ func (x *GetBalanceRequest) GetUserId() int64 {
 
 type GetBalanceResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Balance       int64                  `protobuf:"varint,1,opt,name=balance,proto3" json:"balance,omitempty"`
-	WalletId      int64                  `protobuf:"varint,2,opt,name=wallet_id,json=walletId,proto3" json:"wallet_id,omitempty"`
+	WalletId      int64                  `protobuf:"varint,1,opt,name=wallet_id,json=walletId,proto3" json:"wallet_id,omitempty"`
+	Balance       int64                  `protobuf:"varint,2,opt,name=balance,proto3" json:"balance,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -199,16 +199,16 @@ func (*GetBalanceResponse) Descriptor() ([]byte, []int) {
 	return file_wallet_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *GetBalanceResponse) GetBalance() int64 {
+func (x *GetBalanceResponse) GetWalletId() int64 {
 	if x != nil {
-		return x.Balance
+		return x.WalletId
 	}
 	return 0
 }
 
-func (x *GetBalanceResponse) GetWalletId() int64 {
+func (x *GetBalanceResponse) GetBalance() int64 {
 	if x != nil {
-		return x.WalletId
+		return x.Balance
 	}
 	return 0
 }
@@ -222,12 +222,12 @@ const file_wallet_proto_rawDesc = "" +
 	"\auser_id\x18\x01 \x01(\x03R\x06userId\"M\n" +
 	"\x14CreateWalletResponse\x12\x1b\n" +
 	"\twallet_id\x18\x01 \x01(\x03R\bwalletId\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessage\",\n" +
+	"\abalance\x18\x02 \x01(\x03R\abalance\",\n" +
 	"\x11GetBalanceRequest\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\x03R\x06userId\"K\n" +
-	"\x12GetBalanceResponse\x12\x18\n" +
-	"\abalance\x18\x01 \x01(\x03R\abalance\x12\x1b\n" +
-	"\twallet_id\x18\x02 \x01(\x03R\bwalletId2\x9f\x01\n" +
+	"\x12GetBalanceResponse\x12\x1b\n" +
+	"\twallet_id\x18\x01 \x01(\x03R\bwalletId\x12\x18\n" +
+	"\abalance\x18\x02 \x01(\x03R\abalance2\x9f\x01\n" +
 	"\rWalletService\x12I\n" +
 	"\fCreateWallet\x12\x1b.wallet.CreateWalletRequest\x1a\x1c.wallet.CreateWalletResponse\x12C\n" +
 	"\n" +

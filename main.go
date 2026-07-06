@@ -3,7 +3,9 @@ package main
 import (
 	"log"
 
-	"WalletTest/internal"
+	"WalletTest/internal/handler"
+	"WalletTest/internal/repository"
+	"WalletTest/internal/service"
 	"WalletTest/pkg/app_error"
 	"WalletTest/pkg/config"
 	"WalletTest/pkg/database"
@@ -35,15 +37,20 @@ func main() {
 	//memoryCache := config.NewMemoryCache()
 
 	// =============== DEPENDENCIES ===============
-	wallet := internal.NewWallet()
+	repository := repository.NewRepository(postgresql, redis, logger)
+
+	walletServ := service.NewWallet(repository)
+	walletHand := handler.NewWallet(walletServ)
+
 	grpc, err := server.NewGrpc(env.APP_PORT)
 	if err != nil {
 		log.Fatal(err)
 	}
-	proto.RegisterWalletServiceServer(grpc.Server, wallet)
+	proto.RegisterWalletServiceServer(grpc.Server, walletHand)
 
 	// =============== SERVER ===============
 	grpc.GracefulClose()
+	log.Println("running on " + ":" + env.APP_PORT)
 	if err := grpc.Start(); err != nil {
 		log.Fatal(err)
 	}
