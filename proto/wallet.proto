@@ -9,13 +9,20 @@ service WalletService {
   rpc GetBalance(GetBalanceRequest) returns (GetBalanceResponse);
 }
 
+message Wallet {
+  int64  id         = 1;
+  int64  user_id    = 2;
+  int64  balance    = 3;
+  string created_at = 4;
+  string updated_at = 5;
+}
+
 message CreateWalletRequest {
   int64 user_id = 1;
 }
 
 message CreateWalletResponse {
-  int64 wallet_id = 1;
-  int64 balance   = 2;
+  Wallet wallet = 1;
 }
 
 message GetBalanceRequest {
@@ -23,6 +30,5 @@ message GetBalanceRequest {
 }
 
 message GetBalanceResponse {
-  int64 wallet_id = 1;
-  int64 balance   = 2;
+  Wallet wallet = 1;
 }

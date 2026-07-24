@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"WalletTest/internal/model"
 	"WalletTest/internal/service"
 	"WalletTest/proto"
 	"context"
@@ -22,10 +23,7 @@ func (h *Wallet) CreateWallet(ctx context.Context, req *proto.CreateWalletReques
 	if err != nil {
 		return nil, err
 	}
-	return &proto.CreateWalletResponse{
-		WalletId: int64(wallet.ID),
-		Balance:  wallet.Balance,
-	}, nil
+	return &proto.CreateWalletResponse{Wallet: model.ProtoWallet(wallet)}, nil
 }
 
 func (h *Wallet) GetBalance(ctx context.Context, req *proto.GetBalanceRequest) (*proto.GetBalanceResponse, error) {
@@ -33,8 +31,5 @@ func (h *Wallet) GetBalance(ctx context.Context, req *proto.GetBalanceRequest) (
 	if err != nil {
 		return nil, err
 	}
-	return &proto.GetBalanceResponse{
-		WalletId: int64(wallet.ID),
-		Balance:  wallet.Balance,
-	}, nil
+	return &proto.GetBalanceResponse{Wallet: model.ProtoWallet(wallet)}, nil
 }

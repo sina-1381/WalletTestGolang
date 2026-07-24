@@ -22,9 +22,7 @@ func (r *Repository) WalletFindByUserID(ctx context.Context, userID int) (model.
 
 func (r *Repository) walletCreate(ctx context.Context, exec Executor, userID int) (model.Wallet, error) {
 	var wallet model.Wallet
-	query := `INSERT INTO wallets (user_id) 
-              VALUES ($1) 
-              ON CONFLICT (user_id) DO NOTHING
+	query := `INSERT INTO wallets (user_id) VALUES ($1) ON CONFLICT (user_id) DO NOTHING
               RETURNING id, user_id, balance, created_at, updated_at`
 	err := exec.QueryRow(ctx, query, userID).
 		Scan(&wallet.ID, &wallet.UserID, &wallet.Balance, &wallet.CreatedAt, &wallet.UpdatedAt)
@@ -36,8 +34,7 @@ func (r *Repository) walletCreate(ctx context.Context, exec Executor, userID int
 
 func (r *Repository) walletFindByUserID(ctx context.Context, exec Executor, userID int) (model.Wallet, error) {
 	var wallet model.Wallet
-	query := `SELECT id, user_id, balance, created_at, updated_at 
-              FROM wallets WHERE user_id = $1`
+	query := `SELECT id, user_id, balance, created_at, updated_at FROM wallets WHERE user_id = $1`
 	err := exec.QueryRow(ctx, query, userID).
 		Scan(&wallet.ID, &wallet.UserID, &wallet.Balance, &wallet.CreatedAt, &wallet.UpdatedAt)
 	if err != nil {
